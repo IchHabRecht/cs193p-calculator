@@ -15,4 +15,19 @@ class ViewController: UIViewController {
     
     // Displays the sequence of the calculation
     @IBOutlet private weak var descriptionLabel: UILabel!
+    
+    // Stores if the user started to enter a digit
+    private var userAlreadyTouchedDigit = false;
+    
+    // Adds the current touched digit to label
+    @IBAction private func touchDigit(_ sender: UIButton) {
+        let digit = sender.currentTitle!
+        if userAlreadyTouchedDigit {
+            resultLabel.text = resultLabel.text! + digit
+        } else {
+            resultLabel.text = digit
+            userAlreadyTouchedDigit = true
+        }
+    }
+
 }
