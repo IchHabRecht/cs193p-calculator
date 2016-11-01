@@ -258,6 +258,10 @@
                             <constraint firstAttribute="trailingMargin" secondItem="lSi-kX-BUu" secondAttribute="trailing" id="yFf-pk-3Cg"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="descriptionLabel" destination="Ffl-T2-ycd" id="DDl-mT-GLN"/>
+                        <outlet property="resultLabel" destination="FBM-na-6fT" id="4k3-fD-aWd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
