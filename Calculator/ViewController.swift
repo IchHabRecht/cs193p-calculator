@@ -29,5 +29,17 @@ class ViewController: UIViewController {
             userAlreadyTouchedDigit = true
         }
     }
+    
+    // Performs an operation and shows result in label
+    @IBAction private func performOperation(_ sender: UIButton) {
+        userAlreadyTouchedDigit = false
+        if let operation = sender.currentTitle {
+            if "π" == operation {
+                resultLabel.text = String(M_PI)
+            } else if "e" == operation {
+                resultLabel.text = String(M_E)
+            }
+        }
+    }
 
 }
