@@ -48,6 +48,8 @@ class ViewController: UIViewController {
                 displayResult = M_PI
             } else if "e" == operation {
                 displayResult = M_E
+            } else if "√" == operation {
+                displayResult = sqrt(displayResult)
             }
         }
     }
