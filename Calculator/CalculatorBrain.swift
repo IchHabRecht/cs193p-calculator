@@ -18,6 +18,7 @@ class CalculatorBrain {
         case Constant(Double)
         case UnaryOperation((Double) -> Double, (String) -> String)
         case BinaryOperation((Double, Double) -> Double, (String, String) -> String)
+        case NullaryOperation(() -> Double, String)
         case Equals
     }
     
@@ -33,6 +34,7 @@ class CalculatorBrain {
         "−": Operation.BinaryOperation({ $0 - $1 }, { $0 + " − " + $1 }),
         "×": Operation.BinaryOperation({ $0 * $1 }, { $0 + " × " + $1 }),
         "÷": Operation.BinaryOperation({ $0 / $1 }, { $0 + " ÷ " + $1 }),
+        "rand": Operation.NullaryOperation(drand48, "rand()"),
         "=": Operation.Equals
     ]
     
@@ -95,6 +97,9 @@ class CalculatorBrain {
             case .BinaryOperation(let function, let functionDescription):
                 executePendingOperation()
                 pendingOperation = PendingBinaryOperation(binaryFunction: function, operand: accumulator, binaryFunctionDescription: functionDescription, sequence: sequence)
+            case .NullaryOperation(let function, let description):
+                accumulator = function()
+                sequence = description
             case .Equals:
                 executePendingOperation()
             }
