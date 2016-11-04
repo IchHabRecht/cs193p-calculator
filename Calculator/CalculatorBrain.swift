@@ -13,10 +13,15 @@ class CalculatorBrain {
     // Property to store accumulated results
     private var accumulator = 0.0
     
+    // Types of possible operations
+    enum Operation {
+        case Constant(Double)
+    }
+    
     // Dictionary of supported operations
-    private var operations: Dictionary<String, Double> = [
-        "π": M_PI,
-        "e": M_E
+    private var operations: Dictionary<String, Operation> = [
+        "π": Operation.Constant(M_PI),
+        "e": Operation.Constant(M_E)
     ]
     
     // Read-only property for operation result
@@ -33,8 +38,11 @@ class CalculatorBrain {
     
     // Performs the operation and stores the result
     func performOperation (symbol: String) {
-        if let constant = operations[symbol] {
-            accumulator = constant
+        if let operation = operations[symbol] {
+            switch operation {
+            case .Constant(let constant):
+                accumulator = constant
+            }
         } else if "√" == symbol {
             accumulator = sqrt(accumulator)
         }
