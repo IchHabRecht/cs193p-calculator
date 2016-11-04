@@ -34,6 +34,10 @@ class ViewController: UIViewController {
             if let value = newValue {
                 resultLabel.text = String(value)
                 descriptionLabel.text = brain.description + (brain.isPartialResult ? " ..." : " =")
+            } else {
+                userAlreadyTouchedDigit = false
+                resultLabel.text = "0"
+                descriptionLabel.text = " "
             }
         }
     }
@@ -75,4 +79,10 @@ class ViewController: UIViewController {
         displayResult = brain.result
     }
 
+    // Reset the calculator
+    @IBAction func clearDisplay(_ sender: UIButton) {
+        displayResult = nil
+        brain = CalculatorBrain()
+    }
+    
 }
