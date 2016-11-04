@@ -25,6 +25,7 @@ class CalculatorBrain {
     private var operations: Dictionary<String, Operation> = [
         "π": Operation.Constant(M_PI),
         "e": Operation.Constant(M_E),
+        "x²": Operation.UnaryOperation({ pow($0, 2) }),
         "√": Operation.UnaryOperation(sqrt),
         "±": Operation.UnaryOperation({ -$0 }),
         "+": Operation.BinaryOperation({ $0 + $1 }),
