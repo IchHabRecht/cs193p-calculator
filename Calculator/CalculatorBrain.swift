@@ -13,6 +13,12 @@ class CalculatorBrain {
     // Property to store accumulated results
     private var accumulator = 0.0
     
+    // Dictionary of supported operations
+    private var operations: Dictionary<String, Double> = [
+        "π": M_PI,
+        "e": M_E
+    ]
+    
     // Read-only property for operation result
     var result: Double {
         get {
@@ -27,10 +33,8 @@ class CalculatorBrain {
     
     // Performs the operation and stores the result
     func performOperation (symbol: String) {
-        if "π" == symbol {
-            accumulator = M_PI
-        } else if "e" == symbol {
-            accumulator = M_E
+        if let constant = operations[symbol] {
+            accumulator = constant
         } else if "√" == symbol {
             accumulator = sqrt(accumulator)
         }
