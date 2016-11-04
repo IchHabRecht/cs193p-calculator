@@ -35,7 +35,9 @@ class ViewController: UIViewController {
     // Adds the current touched digit to label
     @IBAction private func touchDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!
-        if userAlreadyTouchedDigit {
+        let currentResultLabel = resultLabel.text!
+        // Prevent multiple leading zeros
+        if userAlreadyTouchedDigit && "0" != currentResultLabel {
             resultLabel.text = resultLabel.text! + digit
         } else {
             resultLabel.text = digit
