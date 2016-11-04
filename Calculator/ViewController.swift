@@ -36,8 +36,20 @@ class ViewController: UIViewController {
     @IBAction private func touchDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!
         let currentResultLabel = resultLabel.text!
-        // Prevent multiple leading zeros
-        if userAlreadyTouchedDigit && "0" != currentResultLabel {
+        // Add floating point to result label
+        if "." == digit {
+            if userAlreadyTouchedDigit {
+                // Only if no floting point available
+                if !currentResultLabel.contains(".") {
+                    resultLabel.text = resultLabel.text! + digit
+                }
+            } else {
+                // Initialize the label
+                resultLabel.text = "0."
+                userAlreadyTouchedDigit = true
+            }
+        } else if userAlreadyTouchedDigit && "0" != currentResultLabel {
+            // Prevent multiple leading zeros
             resultLabel.text = resultLabel.text! + digit
         } else {
             resultLabel.text = digit
