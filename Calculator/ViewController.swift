@@ -19,6 +19,16 @@ class ViewController: UIViewController {
     // Stores if the user started to enter a digit
     private var userAlreadyTouchedDigit = false;
     
+    // Use computed property to get and set the resultLabel
+    private var displayResult: Double {
+        get {
+            return Double(resultLabel.text!)!
+        }
+        set {
+            resultLabel.text = String(newValue)
+        }
+    }
+    
     // Adds the current touched digit to label
     @IBAction private func touchDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!
@@ -35,9 +45,9 @@ class ViewController: UIViewController {
         userAlreadyTouchedDigit = false
         if let operation = sender.currentTitle {
             if "π" == operation {
-                resultLabel.text = String(M_PI)
+                displayResult = M_PI
             } else if "e" == operation {
-                resultLabel.text = String(M_E)
+                displayResult = M_E
             }
         }
     }
