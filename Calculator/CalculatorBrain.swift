@@ -28,6 +28,7 @@ class CalculatorBrain {
         "x²": Operation.UnaryOperation({ pow($0, 2) }),
         "√": Operation.UnaryOperation(sqrt),
         "±": Operation.UnaryOperation({ -$0 }),
+        "xʸ": Operation.BinaryOperation({ pow($0, $1) }),
         "+": Operation.BinaryOperation({ $0 + $1 }),
         "−": Operation.BinaryOperation({ $0 - $1 }),
         "×": Operation.BinaryOperation({ $0 * $1 }),
