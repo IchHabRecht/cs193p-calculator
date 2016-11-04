@@ -23,13 +23,18 @@ class ViewController: UIViewController {
     private var brain = CalculatorBrain()
     
     // Use computed property to get and set the resultLabel
-    private var displayResult: Double {
+    private var displayResult: Double? {
         get {
-            return Double(resultLabel.text!)!
+            if let value = resultLabel.text {
+                return Double(value)
+            }
+            return nil
         }
         set {
-            resultLabel.text = String(newValue)
-            descriptionLabel.text = brain.description + (brain.isPartialResult ? " ..." : " =")
+            if let value = newValue {
+                resultLabel.text = String(value)
+                descriptionLabel.text = brain.description + (brain.isPartialResult ? " ..." : " =")
+            }
         }
     }
     
@@ -61,7 +66,7 @@ class ViewController: UIViewController {
     // Performs an operation and shows result in label
     @IBAction private func performOperation(_ sender: UIButton) {
         if userAlreadyTouchedDigit {
-            brain.setOperand(operand: displayResult)
+            brain.setOperand(operand: displayResult!)
             userAlreadyTouchedDigit = false
         }
         if let operation = sender.currentTitle {
