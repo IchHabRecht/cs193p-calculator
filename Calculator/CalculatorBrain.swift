@@ -26,6 +26,7 @@ class CalculatorBrain {
         "π": Operation.Constant(M_PI),
         "e": Operation.Constant(M_E),
         "√": Operation.UnaryOperation(sqrt),
+        "±": Operation.UnaryOperation({ -$0 }),
         "+": Operation.BinaryOperation({ $0 + $1 }),
         "−": Operation.BinaryOperation({ $0 - $1 }),
         "×": Operation.BinaryOperation({ $0 * $1 }),
