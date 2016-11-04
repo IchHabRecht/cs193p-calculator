@@ -29,6 +29,7 @@ class ViewController: UIViewController {
         }
         set {
             resultLabel.text = String(newValue)
+            descriptionLabel.text = brain.description
         }
     }
     

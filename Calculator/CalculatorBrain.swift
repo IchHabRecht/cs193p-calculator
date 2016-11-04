@@ -45,6 +45,16 @@ class CalculatorBrain {
     // Property to store the pending operation
     private var pendingOperation: PendingBinaryOperation?
     
+    // Property to store the description of operations
+    private var sequence = " "
+    
+    // Read-only property for description
+    var description: String {
+        get {
+            return sequence
+        }
+    }
+    
     // Read-only property for operation result
     var result: Double {
         get {
@@ -63,6 +73,7 @@ class CalculatorBrain {
             switch operation {
             case .Constant(let constant):
                 accumulator = constant
+                sequence = symbol
             case .UnaryOperation(let function):
                 accumulator = function(accumulator)
             case .BinaryOperation(let function):
