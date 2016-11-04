@@ -16,7 +16,7 @@ class CalculatorBrain {
     // Types of possible operations
     enum Operation {
         case Constant(Double)
-        case UnaryOperation((Double) -> Double)
+        case UnaryOperation((Double) -> Double, (String) -> String)
         case BinaryOperation((Double, Double) -> Double)
         case Equals
     }
@@ -25,9 +25,9 @@ class CalculatorBrain {
     private var operations: Dictionary<String, Operation> = [
         "π": Operation.Constant(M_PI),
         "e": Operation.Constant(M_E),
-        "x²": Operation.UnaryOperation({ pow($0, 2) }),
-        "√": Operation.UnaryOperation(sqrt),
-        "±": Operation.UnaryOperation({ -$0 }),
+        "x²": Operation.UnaryOperation({ pow($0, 2) }, { $0 + "²" }),
+        "√": Operation.UnaryOperation(sqrt, { "√(" + $0 + ")" }),
+        "±": Operation.UnaryOperation({ -$0 }, { "-(" + $0 + ")" }),
         "xʸ": Operation.BinaryOperation({ pow($0, $1) }),
         "+": Operation.BinaryOperation({ $0 + $1 }),
         "−": Operation.BinaryOperation({ $0 - $1 }),
@@ -65,6 +65,7 @@ class CalculatorBrain {
     // Sets the accumulator
     func setOperand(operand: Double) {
         accumulator = operand
+        sequence = String(operand)
     }
     
     // Performs the operation and stores the result
@@ -74,8 +75,9 @@ class CalculatorBrain {
             case .Constant(let constant):
                 accumulator = constant
                 sequence = symbol
-            case .UnaryOperation(let function):
+            case .UnaryOperation(let function, let functionDescription):
                 accumulator = function(accumulator)
+                sequence = functionDescription(sequence)
             case .BinaryOperation(let function):
                 executePendingOperation()
                 pendingOperation = PendingBinaryOperation(binaryFunction: function, operand: accumulator)
