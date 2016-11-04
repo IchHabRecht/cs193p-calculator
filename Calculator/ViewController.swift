@@ -81,8 +81,22 @@ class ViewController: UIViewController {
 
     // Reset the calculator
     @IBAction func clearDisplay(_ sender: UIButton) {
-        displayResult = nil
-        brain = CalculatorBrain()
+        if "AC" == sender.currentTitle {
+            displayResult = nil
+            brain = CalculatorBrain()
+        } else if userAlreadyTouchedDigit {
+            // Implement a backspace button if the user already started typing
+            if var currentResultLabel = resultLabel.text {
+                // Remove the last character
+                currentResultLabel.remove(at: currentResultLabel.index(before: currentResultLabel.endIndex))
+                if currentResultLabel.isEmpty {
+                    // Reset label if empty
+                    currentResultLabel = "0"
+                    userAlreadyTouchedDigit = false
+                }
+                resultLabel.text = currentResultLabel
+            }
+        }
     }
     
 }
