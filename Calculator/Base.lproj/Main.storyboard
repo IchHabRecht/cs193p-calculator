@@ -82,6 +82,9 @@
                                                         <state key="normal" title="=">
                                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="performOperation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bfv-QT-kH8"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>

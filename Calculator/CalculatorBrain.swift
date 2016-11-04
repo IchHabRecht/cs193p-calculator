@@ -18,6 +18,7 @@ class CalculatorBrain {
         case Constant(Double)
         case UnaryOperation((Double) -> Double)
         case BinaryOperation((Double, Double) -> Double)
+        case Equals
     }
     
     // Dictionary of supported operations
@@ -29,7 +30,8 @@ class CalculatorBrain {
         "−": Operation.BinaryOperation({ $0 - $1 }),
         "×": Operation.BinaryOperation({ $0 * $1 }),
         "÷": Operation.BinaryOperation({ $0 / $1 }),
-        ]
+        "=": Operation.Equals
+    ]
     
     // Struct to store a binary operation
     private struct PendingBinaryOperation {
@@ -61,12 +63,19 @@ class CalculatorBrain {
             case .UnaryOperation(let function):
                 accumulator = function(accumulator)
             case .BinaryOperation(let function):
-                if nil != pendingOperation {
-                    accumulator = pendingOperation!.binaryFunction(pendingOperation!.operand, accumulator)
-                    pendingOperation = nil
-                }
+                executePendingOperation()
                 pendingOperation = PendingBinaryOperation(binaryFunction: function, operand: accumulator)
+            case .Equals:
+                executePendingOperation()
             }
+        }
+    }
+    
+    // Execute a pending oparation
+    private func executePendingOperation() {
+        if nil != pendingOperation {
+            accumulator = pendingOperation!.binaryFunction(pendingOperation!.operand, accumulator)
+            pendingOperation = nil
         }
     }
     
