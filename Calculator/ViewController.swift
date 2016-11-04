@@ -25,14 +25,19 @@ class ViewController: UIViewController {
     // Use computed property to get and set the resultLabel
     private var displayResult: Double? {
         get {
-            if let value = resultLabel.text {
-                return Double(value)
+            // Try to convert the text to a Double
+            if let number = resultLabel.text, let value = NumberFormatter().number(from: number)?.doubleValue {
+                return value
             }
             return nil
         }
         set {
             if let value = newValue {
-                resultLabel.text = String(value)
+                // Format value as a decimal with 6 digits after floating point
+                let formatter = NumberFormatter()
+                formatter.numberStyle = .decimal
+                formatter.maximumFractionDigits = 6
+                resultLabel.text = formatter.string(from: NSNumber(value: value))
                 descriptionLabel.text = brain.description + (brain.isPartialResult ? " ..." : " =")
             } else {
                 userAlreadyTouchedDigit = false

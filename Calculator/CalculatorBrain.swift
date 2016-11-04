@@ -79,7 +79,7 @@ class CalculatorBrain {
     // Sets the accumulator
     func setOperand(operand: Double) {
         accumulator = operand
-        sequence = String(operand)
+        sequence = String(format: "%g", operand)
     }
     
     // Performs the operation and stores the result
