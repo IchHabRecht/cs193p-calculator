@@ -17,7 +17,7 @@ class CalculatorBrain {
     enum Operation {
         case Constant(Double)
         case UnaryOperation((Double) -> Double, (String) -> String)
-        case BinaryOperation((Double, Double) -> Double)
+        case BinaryOperation((Double, Double) -> Double, (String, String) -> String)
         case Equals
     }
     
@@ -28,11 +28,11 @@ class CalculatorBrain {
         "x²": Operation.UnaryOperation({ pow($0, 2) }, { $0 + "²" }),
         "√": Operation.UnaryOperation(sqrt, { "√(" + $0 + ")" }),
         "±": Operation.UnaryOperation({ -$0 }, { "-(" + $0 + ")" }),
-        "xʸ": Operation.BinaryOperation({ pow($0, $1) }),
-        "+": Operation.BinaryOperation({ $0 + $1 }),
-        "−": Operation.BinaryOperation({ $0 - $1 }),
-        "×": Operation.BinaryOperation({ $0 * $1 }),
-        "÷": Operation.BinaryOperation({ $0 / $1 }),
+        "xʸ": Operation.BinaryOperation({ pow($0, $1) }, { $0 + " ^ " + $1 }),
+        "+": Operation.BinaryOperation({ $0 + $1 }, { $0 + " + " + $1 }),
+        "−": Operation.BinaryOperation({ $0 - $1 }, { $0 + " − " + $1 }),
+        "×": Operation.BinaryOperation({ $0 * $1 }, { $0 + " × " + $1 }),
+        "÷": Operation.BinaryOperation({ $0 / $1 }, { $0 + " ÷ " + $1 }),
         "=": Operation.Equals
     ]
     
@@ -40,6 +40,8 @@ class CalculatorBrain {
     private struct PendingBinaryOperation {
         var binaryFunction: (Double, Double) -> Double
         var operand: Double
+        var binaryFunctionDescription: (String, String) -> String
+        var sequence: String
     }
     
     // Property to store the pending operation
@@ -51,7 +53,19 @@ class CalculatorBrain {
     // Read-only property for description
     var description: String {
         get {
-            return sequence
+            if nil == pendingOperation {
+                return sequence
+            } else {
+                let operationSequence = pendingOperation!.sequence
+                return pendingOperation!.binaryFunctionDescription(operationSequence, operationSequence != sequence ? sequence : "")
+            }
+        }
+    }
+    
+    // Returns true if a pending operation is available
+    var isPartialResult: Bool {
+        get {
+            return nil != pendingOperation
         }
     }
     
@@ -78,9 +92,9 @@ class CalculatorBrain {
             case .UnaryOperation(let function, let functionDescription):
                 accumulator = function(accumulator)
                 sequence = functionDescription(sequence)
-            case .BinaryOperation(let function):
+            case .BinaryOperation(let function, let functionDescription):
                 executePendingOperation()
-                pendingOperation = PendingBinaryOperation(binaryFunction: function, operand: accumulator)
+                pendingOperation = PendingBinaryOperation(binaryFunction: function, operand: accumulator, binaryFunctionDescription: functionDescription, sequence: sequence)
             case .Equals:
                 executePendingOperation()
             }
@@ -91,6 +105,7 @@ class CalculatorBrain {
     private func executePendingOperation() {
         if nil != pendingOperation {
             accumulator = pendingOperation!.binaryFunction(pendingOperation!.operand, accumulator)
+            sequence = pendingOperation!.binaryFunctionDescription(pendingOperation!.sequence, sequence)
             pendingOperation = nil
         }
     }

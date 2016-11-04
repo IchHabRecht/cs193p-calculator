@@ -29,7 +29,7 @@ class ViewController: UIViewController {
         }
         set {
             resultLabel.text = String(newValue)
-            descriptionLabel.text = brain.description
+            descriptionLabel.text = brain.description + (brain.isPartialResult ? " ..." : " =")
         }
     }
     
