@@ -19,6 +19,9 @@ class ViewController: UIViewController {
     // Stores if the user started to enter a digit
     private var userAlreadyTouchedDigit = false;
     
+    // Property for CalculatorBrain instance
+    private var brain = CalculatorBrain()
+    
     // Use computed property to get and set the resultLabel
     private var displayResult: Double {
         get {
@@ -42,16 +45,14 @@ class ViewController: UIViewController {
     
     // Performs an operation and shows result in label
     @IBAction private func performOperation(_ sender: UIButton) {
-        userAlreadyTouchedDigit = false
-        if let operation = sender.currentTitle {
-            if "π" == operation {
-                displayResult = M_PI
-            } else if "e" == operation {
-                displayResult = M_E
-            } else if "√" == operation {
-                displayResult = sqrt(displayResult)
-            }
+        if userAlreadyTouchedDigit {
+            brain.setOperand(operand: displayResult)
+            userAlreadyTouchedDigit = false
         }
+        if let operation = sender.currentTitle {
+            brain.performOperation(symbol: operation)
+        }
+        displayResult = brain.result
     }
 
 }
